@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Project NATT: Log in</title>
+    <title>Project NATT</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href='static/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
     <link href='static/css/device.css' rel='stylesheet' type='text/css'/>
@@ -20,7 +20,7 @@
 		</div>
 		</div>
 		<div class="buttons">
-		<form action="signup.html">
+		<form action="signup.php">
 	 	<input style="width: 100%;
 		background-color: cornflowerblue;
 		padding-bottom: 2%;
@@ -28,7 +28,7 @@
 		font-size: 32px;
 		border-radius: 0px;"
 		class="signupbut btn" value="Sign Up" type="submit"/></form>
-		<form action="login.html">
+		<form action="login.php">
 		<input style="
 			background-color: green;
 			width: 100%;
