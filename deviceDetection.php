@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Project NATT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<script type="text/javascript">
 
 if (screen.width <= 700) {
-document.location = "mobile/deviceDetection.html";
+document.location = "mobile/deviceDetection.php";
 }
 
 </script>
