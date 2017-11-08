@@ -1,6 +1,9 @@
 <?php
 session_start();
-date_default_timzezone_set("UTC");
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
+date_default_timezone_set("UTC");
 @$mysqli = new mysqli("localhost", "root", "natt", "usersDB");
 if($mysqli->connect_error){
 	die("Connection error");
@@ -17,29 +20,9 @@ $points = $_SESSION['points'];
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href='static/css/mainPage.css' rel='stylesheet' type='text/css'/>
-    <script>
-	function startTime() {
-    var today = new Date();
-    var h = today.getHours();
-    var m = today.getMinutes();
-    var s = today.getSeconds();
-    m = checkTime(m);
-    s = checkTime(s);
-    document.getElementById('txt').innerHTML =
-    h + ":" + m + ":" + s + "<br><p style='text-align: center; color: red; font-size: 24px;'>Please click stop timer to ensure you receive your points.</p>";
-    var t = setTimeout(startTime, 500);
-}
-function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
-}
 
-function calculatePoints(i, j){
-	
-}
-</script>
 </head>
-<body onload="startTime()" style="background-color: black;">
+<body style="background-color: black;">
 <div class="row">
 	<nav class="navbar topbar" style="padding-top: 2em;
 	padding-bottom: 2em; border-radius: 0; width: 100%;">
@@ -60,10 +43,11 @@ function calculatePoints(i, j){
 	</div>
 	<div class="row" style="font-size: 36px; height: 20em;">
 	<div class="col-sm-6">
+		<form action="timestamp.php" method="POST" role="form">
 		<button style="border-radius: 0; position: absolute; width: 100%; height:20em; padding:0; 
 		font-size: 36px; color: white; 
 		background-image: url('static/images/dumbell.png'); background-repeat: no-repeat;" 
-		type="button" class="btn btn-lg fitness" data-toggle="modal" data-target="#timerModal">Fitness Mode</button>
+		type="submit" class="btn btn-lg fitness">Fitness Mode</button></form>
 		</div>
 		<div class="col-sm-6" style="padding-right: 0;">
 		<button style="border-radius: 0; background-image: url('static/images/movie.jpg'); width: 100%; height:20em; padding:0;
@@ -86,41 +70,40 @@ function calculatePoints(i, j){
 		font-size: 36px; color: white; background-image: url('static/images/gametime.jpg'); background-repeat: no-repeat;" type="button" class="btn btn-lg enter">Family Mode</button>
 		</div>
 		<div class="col-sm-6" style="padding-right: 0;">
+		
+		<?php $starttime = date("h:i:sa"); ?>
 		<button data-toggle="modal" data-target="#timerModal" 
 		style="border-radius: 0; width: 100%; height: 20em; padding: 0;
 		font-size: 36px; color: white; background-image: url('static/images/study.jpg');
-		background-repeat: no-repeat;" type="button" class="btn btn-lg enter">Study Mode</button>
+		background-repeat: no-repeat;" type="submit" class="btn btn-lg enter">Study Mode</button>
 		</div>
 		
-		<div class="modal fade" id="timerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-
-                    </button>
-                     <h4 class="modal-title" id="myModalLabel" style="text-align: center; font-size: 36px;">Points Timer</h4>
-		
-                </div>
-                <div class="modal-body" id="txt" style="text-align: center;"></div>
-                <div class="modal-footer">
-		<form method="POST" id="timeform" role="form">
-			<?php $time = date("h:i:sa"); ?>
-                    	<input type="hidden" value="<?php echo $time; ?>" >
-			<button type="submit" class="btn btn-danger" style="width: 100%; font-size: 36px; text-align: center;" 
-					data-dismiss="modal">Stop Timer</button>
-		</form?
-<?php
-
-
-
-
-?>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
+
+
+<?php
+$_SESSION['starttime'] = $starttime;
+/*
+if(isset($_REQUEST['starttime']) && isset($_REQUEST['endtime'])){
+        $endtime = htmlspecialchars($_REQUEST['endtime']);
+        $starttime = htmlspecialchars($_REQUEST['starttime']);
+        $timeDiff = $endtime - $starttime;
+        $divisor = 30; //point every 3 seconds right now i think
+        $newpoints = $timeDiff / $divisor;
+        $_SESSION['points'] - $_SESSION['points'] + $newpoints;
+        $insertpts = $_SESSION['points'];
+        $stmtupdate = 'Update users set points=' .$insertpts . 'where username="' . $_SESSION['username'] . '"';
+        $stmtupdate->execute();
+        $stmtupdate->close();
+        header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
+} else {
+        print "<p>This isnt working</p>";
+}
+
+
+*/
+?>
 </body>
 </html>

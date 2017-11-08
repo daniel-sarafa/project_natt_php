@@ -19,7 +19,7 @@
 	}	
 
 
-	</script
+	</script>
 </head>
 <body style="background-color: black;">
 	<div class="container topbar"></div>
