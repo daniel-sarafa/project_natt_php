@@ -1,3 +1,10 @@
+<?php
+@$database = new mysqli("localhost", "root", "natt", "usersDB");
+if($database->connect_error){
+	die("Connection failed.");
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,15 +21,15 @@
 			<h1>Sign up for Project NATT</h1>
 			<div class="theform" style="margin-top: 15%;">
 			<!-- needs to be fixed without thymeleaf -->
-			<form action="mainpage.html" method="post" style="font-size: 36px;">
+			<form method="post" style="font-size: 36px;" role="form">
 				<div class="formslineup" style="text-align: right; margin-right: 15%;">
-					<p>Desired Username: <input style="color: black;" type="text" /></p>
-					<p>Password: <input style="color: black;" type="password" /></p>
-					<p>Email Address: <input style="color: black;" type="text" /></p>
-					<p>First Name: <input style="color: black;" type="text" /></p>
-					<p>Last Name: <input style="color: black;" type="text"/></p>
+					<p>Desired Username: <input style="color: black;" name="username" type="text" required/></p>
+					<p>Password: <input style="color: black;" type="password" name="password" required/></p>
+					<p>Email Address: <input style="color: black;" type="text" name="email" required/></p>
+					<p>First Name: <input style="color: black;" type="text" name="firstname" required/></p>
+					<p>Last Name: <input style="color: black;" type="text" name="lastname" required/></p>
 					</div>
-					<p style="margin-top: 5%;"><input type="submit" value="Submit" class="btn submitbut"/>
+					<p style="margin-top: 5%;"><a href="mainpage.php"><input type="submit" value="Submit" class="btn submitbut"/></a>
 					<input type="reset" value="Reset" class="btn resetbut"/></p>
 			</form>
 			</div>
