@@ -47,12 +47,22 @@ if(isset($_REQUEST['username']) && isset($_REQUEST['password']) && isset($_REQUE
 	isset($_REQUEST['lastname'])){
 	$username = htmlspecialchars($_REQUEST['username']);
 	$password = htmlspecialchars($_REQUEST['password']);
-	$password = password_hash($password, PASSWORD_DEFAULT);
+	$hashed_pass = password_hash($password, PASSWORD_DEFAULT);
 	$email = htmlspecialchars($_REQUEST['email']);
 	$firstname = htmlspecialchars($_REQUEST['firstname']);
 	$lastname = htmlspecialchars($_REQUEST['lastname']);
 	
 	$stmtUnique = 'SELECT * from users where username = "' . $username . '"';
+	$result = $database->query($stmtUnique);
+	if($result->num_rows > 0){
+		//use print to call preventDefault in javascript function (let user know that username is taken)
+	} else {
+		$stmtinsert = $database->prepare("INSERT INTO users (username, password, firstname, lastname, email) VALUES(?, ?, ?, ?, ?)");
+		$stmtinsert->bind_param("sssss", $username, $hashed_pass, $firstname, $lastname, $email);
+		$stmtinsert->execute(); 
+		$stmtinsert->close();
+	}
+	$database->close();
 }
 
 
