@@ -43,39 +43,46 @@ $points = $_SESSION['points'];
 	</div>
 	<div class="row" style="font-size: 36px; height: 20em;">
 	<div class="col-sm-6">
-		<form action="timestamp.php" method="POST" role="form">
+		                <?php $starttime = "";
+						
+				?>
+		<form action="timestamp.php" method="GET" role="form">
+		<input type="hidden" value="<?php echo date('Y-m-d h:i:sa'); ?>" name="starttime">
 		<button style="border-radius: 0; position: absolute; width: 100%; height:20em; padding:0; 
 		font-size: 36px; color: white; 
 		background-image: url('static/images/dumbell.png'); background-repeat: no-repeat;" 
 		type="submit" class="btn btn-lg fitness">Fitness Mode</button></form>
 		</div>
 		<div class="col-sm-6" style="padding-right: 0;">
-		<button style="border-radius: 0; background-image: url('static/images/movie.jpg'); width: 100%; height:20em; padding:0;
-		font-size: 36px; color: white; background-repeat: no-repeat;" type="button" 
-		class="btn btn-lg enter" data-toggle="modal" data-target="#timerModal">Entertainment Mode</button>
+		  <form action="timestamp.php" method="GET" role="form">
+                <input type="hidden" value="<?php echo date('Y-m-d h:i:sa'); ?>" name="starttime">
+
+		<button style="border-radius: 0; background-image: url('static/images/movie.jpg'); width: 100%; height:20em; padding:0;	font-size: 36px; color: white; background-repeat: no-repeat;" type="submit" class="btn btn-lg enter">Entertainment Mode</button></form>
 		</div>
 		</div>
 		<div class="row" style="height: 7em;">
 		<div class="col-sm-12" style="padding-right: 0;">
-			<button type="button" class="btn btn-lg drive" data-toggle="modal" data-target="#timerModal"
+	  <form action="timestamp.php" method="GET" role="form">
+                <input type="hidden" value="<?php echo date('Y-m-d h:i:sa'); ?>" name="starttime">
+			<button type="submit" class="btn btn-lg drive"
 			style="width: 100%; background-image: url('static/images/drive.jpg'); 
 			background-repeat: no-repeat; height: 7em; font-size: 36px; border-radius: 0; color: white;">
-			Drive Mode</button>
+			Drive Mode</button></form>
 		</div>
 		</div>
 		<div class="row" style="font-size: 36px; height: 20em;">
 		<div class="col-sm-6">
-		<button data-toggle="modal" data-target="#timerModal" style="border-radius: 0; position: absolute; 
-		width: 100%; height:20em; padding: 0;
-		font-size: 36px; color: white; background-image: url('static/images/gametime.jpg'); background-repeat: no-repeat;" type="button" class="btn btn-lg enter">Family Mode</button>
+	  <form action="timestamp.php" method="GET" role="form">
+                <input type="hidden" value="<?php echo date('Y-m-d h:i:sa'); ?>" name="starttime">
+		<button style="border-radius: 0; position: absolute; width: 100%; height:20em; padding: 0;
+		font-size: 36px; color: white; background-image: url('static/images/gametime.jpg'); background-repeat: no-repeat;" type="submit" class="btn btn-lg enter">Family Mode</button></form>
 		</div>
 		<div class="col-sm-6" style="padding-right: 0;">
-		
-		<?php $starttime = date("h:i:sa"); ?>
-		<button data-toggle="modal" data-target="#timerModal" 
-		style="border-radius: 0; width: 100%; height: 20em; padding: 0;
+		  <form action="timestamp.php" method="GET" role="form">
+                <input type="hidden" value="<?php echo date('Y-m-d h:i:sa'); ?>" name="starttime">
+		<button style="border-radius: 0; width: 100%; height: 20em; padding: 0;
 		font-size: 36px; color: white; background-image: url('static/images/study.jpg');
-		background-repeat: no-repeat;" type="submit" class="btn btn-lg enter">Study Mode</button>
+		background-repeat: no-repeat;" type="submit" class="btn btn-lg enter">Study Mode</button></form>
 		</div>
 		
     </div>
@@ -84,26 +91,38 @@ $points = $_SESSION['points'];
 
 
 <?php
-$_SESSION['starttime'] = $starttime;
-/*
-if(isset($_REQUEST['starttime']) && isset($_REQUEST['endtime'])){
-        $endtime = htmlspecialchars($_REQUEST['endtime']);
-        $starttime = htmlspecialchars($_REQUEST['starttime']);
-        $timeDiff = $endtime - $starttime;
-        $divisor = 30; //point every 3 seconds right now i think
-        $newpoints = $timeDiff / $divisor;
-        $_SESSION['points'] - $_SESSION['points'] + $newpoints;
-        $insertpts = $_SESSION['points'];
-        $stmtupdate = 'Update users set points=' .$insertpts . 'where username="' . $_SESSION['username'] . '"';
-        $stmtupdate->execute();
-        $stmtupdate->close();
-        header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
-} else {
-        print "<p>This isnt working</p>";
+//print "<p style='color: white; font-size: 36px;'>" . $_SESSION['starttime'] . "This is the time</p>";
+if(isset($_REQUEST['time'])){
+        $time = $_REQUEST['time'];
+	$start = $_SESSION['starttime'];
+	//print  "<p style='color: white; font-size: 36px;'>" . $start . "this is the time</p>";
+        $stmttime = $mysqli->prepare('update users set logintime=NOW() where username=?');
+        $user = $_SESSION['username'];
+        $stmttime->bind_param('s', $user);
+        $status = $stmttime->execute();
+	$stmtGet = 'select logintime from users where username="' . $user . '"';
+	$foundTime = "";	
+	$result = $mysqli->query($stmtGet);
+	if($result->num_rows > 0){
+		while($row = $result->fetch_assoc()){
+			$foundTime = $row['logintime'];
+		}
+	}
+	$foundTimeStr = strtotime($foundTime);
+	$startStr = strtotime($start);
+	$timeDiff = ($foundTimeStr - $startStr)/60;
+	$newPoints = $_SESSION['points'] + floor($timeDiff); //1 point every 10 minutes in actuality
+	$_SESSION['points'] = $newPoints;
+	$stmtPts = $mysqli->prepare('update users set points=? where username=?');
+	$stmtPts->bind_param('is', $newPoints, $user);
+	$stmtPts->execute();
+	$stmtPts->close();
+
+	header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
+	//print  "<p style='color: white; font-size: 36px;'>" . $timeDiff . " minutes</p>";
+
 }
 
-
-*/
 ?>
 </body>
 </html>

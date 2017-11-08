@@ -1,27 +1,3 @@
-<?php
-/*
-$requestMethod = $_SERVER['REQUEST_METHOD'];
-echo "<p>" . $requestMethod . "</p>";
-
-	$startime = $_SESSION['starttime'];
-
-	$stmttime = 'Update users set logintime=NOW() where username="' . $_SESSION['username'] . '"';
-	$stmttime->execute();                
-	$stmttime->close();
-/*
-        $divisor = 30; //point every 3 seconds right now i think
-        $newpoints = $timeDiff / $divisor;
-        $_SESSION['points'] - $_SESSION['points'] + $newpoints;
-        $insertpts = $_SESSION['points'];
-        $stmtupdate = 'Update users set points=' .$insertpts . 'where username="' . $_SESSION['username'] . '"';
-	
-        $stmtupdate->execute();
-        $stmtupdate->close();
-        header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
-} else {
-        print "<p>This isnt working</p>"; */
-
-?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -55,8 +31,30 @@ function calculatePoints(i, j){
 <body style="background-color: black; color: white;" onload="startTime();" >
 	<div id="txt" style="font-size: 36px; margin-top: 60%; text-align: center;"></div>
 	<div id="form">
-	<form role="form" action="mainpage.php" method="GET">
-		<button class="btn btn-danger" style="margin-left: 10%; width: 80%; font-size:36px; text-align: center;" type="submit">Stop Timer</button>
+	<?php $time = ""; ?>
+	<form role="form" method="GET" action="mainpage.php">
+		<input type="hidden" name="time" value="NOW()">
+		<button class="btn btn-danger" style="margin-left: 10%; width: 80%; font-size:36px; text-align: center; color: white;" type="submit">Stop Timer</button>
 	</form>
+
+<?php
+session_start();
+if(isset($_REQUEST['starttime'])){
+$_SESSION['starttime'] = htmlspecialchars($_REQUEST['starttime']);
+
+}
+/*
+@$mysqli = new mysqli("localhost", "root", "natt", "usersDB");
+
+if(isset($_REQUEST['time'])){
+	$time = $_REQUEST['time'];
+	$stmttime = $mysqli->prepare('update users set logintime=? where username=?');
+	$logintime = "NOW()";
+	$user = $_SESSION['username'];
+	$stmttime ->bind_param('ss', $logintime, $user);
+	$status = $stmt->execute();
+}
+*/
+?>
 </body>
 </html>
