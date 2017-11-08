@@ -21,6 +21,13 @@ if($database->connect_error){
 			<h1>Sign up for Project NATT</h1>
 			<div class="theform" style="margin-top: 15%;">
 			<!-- needs to be fixed without thymeleaf -->
+			<?php
+			$username = "";
+			$password = "";
+			$email = "";
+			$firstname = "";
+			$lastname = "";
+			?>
 			<form method="post" style="font-size: 36px;" role="form">
 				<div class="formslineup" style="text-align: right; margin-right: 15%;">
 					<p>Desired Username: <input style="color: black;" name="username" type="text" required/></p>
@@ -34,5 +41,21 @@ if($database->connect_error){
 			</form>
 			</div>
 		</div>
+<?php
+
+if(isset($_REQUEST['username']) && isset($_REQUEST['password']) && isset($_REQUEST['email') && isset($_REQUEST['firstname']) &&
+	isset($_REQUEST['lastname'])){
+	$username = htmlspecialchars($_REQUEST['username']);
+	$password = htmlspecialchars($_REQUEST['password']);
+	$password = password_hash($password, PASSWORD_DEFAULT);
+	$email = htmlspecialchars($_REQUEST['email']);
+	$firstname = htmlspecialchars($_REQUEST['firstname']);
+	$lastname = htmlspecialchars($_REQUEST['lastname']);
+	
+	$stmtUnique = 'SELECT * from users where username = "' . $username . '"';
+}
+
+
+?>
 </body>
 </html>
