@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
@@ -17,7 +17,15 @@ if($mysqli->connect_error){
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href='static/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
     <link href='static/css/signupPage.css' rel='stylesheet' type='text/css'/>
-    
+    <script>
+	function usernameTaken(){
+		document.getElementById('userTaken').style.visibility = "visible";
+		event.preventDefault();
+
+	}
+
+
+	</script>
 </head>
 <body style="background-color: black;">
 	<div class="container topbar"></div>
@@ -42,8 +50,9 @@ if($mysqli->connect_error){
 					<p>First Name: <input style="color: black;" type="text" name="firstname" required/></p>
 					<p>Last Name: <input style="color: black;" type="text" name="lastname" required/></p>
 					</div>
-					<p style="margin-top: 5%;"><a href="mainpage.php"><input type="submit" value="Submit" class="btn submitbut"/></a>
+					<p style="margin-top: 5%;"><input type="submit" value="Submit" class="btn submitbut"/>
 					<input type="reset" value="Reset" class="btn resetbut"/></p>
+					<p id="userTaken" style="color: red; visibility: hidden; text-align: center;">That username is already taken.</p>
 			</form>
 			</div>
 		</div>
@@ -63,11 +72,15 @@ if(isset($_REQUEST['username']) && isset($_REQUEST['password']) && isset($_REQUE
 	$result = $mysqli->query($stmtUnique);
 	if($result->num_rows > 0){
 		//use print to call preventDefault in javascript function (let user know that username is taken)
+		print '<script>usernameTaken(); </script>';
 	} else {
 		$stmtinsert = $mysqli->prepare("INSERT INTO users (username, password, firstname, lastname, email) VALUES(?, ?, ?, ?, ?)");
 		$stmtinsert->bind_param("sssss", $username, $hashed_pass, $firstname, $lastname, $email);
 		$stmtinsert->execute(); 
 		$stmtinsert->close();
+		$_SESSION['username'] = $username;
+		$_SESSION['points'] = 0;
+		header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
 	}
 	$mysqli->close();
 

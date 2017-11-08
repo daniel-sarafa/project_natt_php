@@ -1,3 +1,13 @@
+<?php
+session_start();
+date_default_timzezone_set("UTC");
+@$mysqli = new mysqli("localhost", "root", "natt", "usersDB");
+if($mysqli->connect_error){
+	die("Connection error");
+}
+$username = $_SESSION['username'];
+$points = $_SESSION['points'];
+?>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -16,25 +26,34 @@
     m = checkTime(m);
     s = checkTime(s);
     document.getElementById('txt').innerHTML =
-    h + ":" + m + ":" + s;
+    h + ":" + m + ":" + s + "<br><p style='text-align: center; color: red; font-size: 24px;'>Please click stop timer to ensure you receive your points.</p>";
     var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
     if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
     return i;
 }
-	</script>
+
+function calculatePoints(i, j){
+	
+}
+</script>
 </head>
 <body onload="startTime()" style="background-color: black;">
 <div class="row">
-	<nav class="navbar topbar" style="padding-top: 3.5em;
-	padding-bottom: 20px; border-radius: 0; width: 100%;">
+	<nav class="navbar topbar" style="padding-top: 2em;
+	padding-bottom: 2em; border-radius: 0; width: 100%;">
 		<div class="container-fluid">
 		<div class="navbar-header">
-		<p class="hello" style="width: 300px;" th:text="'Hello, ' + ${user.firstName} + '!'"/>
+		<?php
+		print '<p class="hello" style="width: 300px; text-align: center; margin-bottom: 1px;">Hello, ' .$username . '!</p>';
+		?>
+		
 		</div>
-		<div class="navbar-right" style="padding-left: 0; width: 300px; text-align: right;"> 
-			<p class="points" th:text="'Points:&nbsp;' + ${user.pointsForUser.totalPoints}"/>
+		<div class="navbar-right" style="padding-left: 0; width: 300px; text-align: right;">
+		<?php 
+			print '<p class="points" style="text-align: center;">Points: ' . $points . '</p>';
+		?>
 		</div>
 	</div>
 	</nav>
@@ -72,21 +91,6 @@ function checkTime(i) {
 		font-size: 36px; color: white; background-image: url('static/images/study.jpg');
 		background-repeat: no-repeat;" type="button" class="btn btn-lg enter">Study Mode</button>
 		</div>
-	<!--	
-		<div id="timerModal" class="modal fade">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-				<div class="modal-header">
-				   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-		</div>
-					<div class="modal-body">
-						<div id="txt"></div>
-					</div>
-				</div>
-			</div>
-		</div> -->
 		
 		<div class="modal fade" id="timerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="vertical-alignment-helper">
@@ -97,11 +101,22 @@ function checkTime(i) {
 
                     </button>
                      <h4 class="modal-title" id="myModalLabel" style="text-align: center; font-size: 36px;">Points Timer</h4>
+		
                 </div>
                 <div class="modal-body" id="txt" style="text-align: center;"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" style="width: 100%; font-size: 36px; text-align: center;" 
+		<form method="POST" id="timeform" role="form">
+			<?php $time = date("h:i:sa"); ?>
+                    	<input type="hidden" value="<?php echo $time; ?>" >
+			<button type="submit" class="btn btn-danger" style="width: 100%; font-size: 36px; text-align: center;" 
 					data-dismiss="modal">Stop Timer</button>
+		</form?
+<?php
+
+
+
+
+?>
                 </div>
             </div>
         </div>
