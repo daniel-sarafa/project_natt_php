@@ -10,6 +10,9 @@ if($mysqli->connect_error){
 }
 $username = $_SESSION['username'];
 $points = $_SESSION['points'];
+if($username == ""){
+	header("Location:  http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/login.php");
+}
 ?>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -20,6 +23,15 @@ $points = $_SESSION['points'];
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href='static/css/mainPage.css' rel='stylesheet' type='text/css'/>
+	        <script>
+
+
+	if (screen.width >= 700) {
+		document.location = "../deviceDetection.php";
+	}
+
+        </script>
+
 
 </head>
 <body style="background-color: black;">

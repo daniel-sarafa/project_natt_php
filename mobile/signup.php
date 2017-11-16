@@ -17,6 +17,16 @@ if($mysqli->connect_error){
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href='static/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
     <link href='static/css/signupPage.css' rel='stylesheet' type='text/css'/>
+       <script>
+
+
+	if (screen.width >= 700) {
+	document.location = "../deviceDetection.php";
+	}
+
+        </script>
+
+
     <script>
 	function usernameTaken(){
 		document.getElementById('userTaken').style.visibility = "visible";

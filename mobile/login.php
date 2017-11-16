@@ -8,10 +8,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Project NATT: Sign Up</title>
+    <title>Project NATT: Log In</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href='static/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
     <link href='static/css/signupPage.css' rel='stylesheet' type='text/css'/>
+        <script>
+
+
+if (screen.width >= 700) {
+document.location = "../deviceDetection.php";
+}
+
+        </script>
+
+
+
     <script>
 	function incorrectUserPass(){
 		document.getElementById('incorrect').style.visibility = "visible";
@@ -78,6 +89,7 @@ if($username == $foundUName && password_verify($password, $foundpass)){
 	if($_SESSION['points'] == ""){
 		$_SESSION['points'] = 100; //
 	}
+	$loggedIn = 1;
 	header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
 
 } else {

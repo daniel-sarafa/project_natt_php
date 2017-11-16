@@ -5,6 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link href='static/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
     <link href='static/css/device.css' rel='stylesheet' type='text/css'/>
+	<script>
+	
+
+if (screen.width >= 700) {
+document.location = "../deviceDetection.php";
+}
+
+	</script>
     
 </head>
 <body>
