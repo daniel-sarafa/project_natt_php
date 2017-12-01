@@ -1,14 +1,17 @@
 <?php
 session_start();
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
+//ini_set('display_startup_errors', 1);
+//ini_set('display_errors', 1);
+//error_reporting(-1);
 date_default_timezone_set("UTC");
 @$mysqli = new mysqli("localhost", "root", "natt", "usersDB");
 if($mysqli->connect_error){
 	die("Connection error");
 }
 $username = $_SESSION['username'];
+if($_SESSION['points'] == ""){
+	$_SESSION['points'] = 0;
+}
 $points = $_SESSION['points'];
 if($username == ""){
 	header("Location:  http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/login.php");

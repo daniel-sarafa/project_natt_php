@@ -36,7 +36,7 @@ document.location = "../deviceDetection.php";
 	<div class="container topbar"></div>
 		<img class="image" src="static/images/traffic.png" style="width: 30%; margin-left: 35%; margin-top: 10%;"></img>
 		<div class="text-body">
-			<h1>Sign up for Project NATT</h1>
+			<h1>Log In to Project NATT</h1>
 			<?php
 				$username = "";
 				$password = "";
@@ -70,7 +70,7 @@ document.location = "../deviceDetection.php";
 		</div>
 <?php
 if(isset($_REQUEST['username']) && isset($_REQUEST['password'])){
-$username = htmlspecialchars($_REQUEST['username']);
+$username = strtolower(htmlspecialchars($_REQUEST['username']));
 $password = htmlspecialchars($_REQUEST['password']);
 
 $stmtusers = 'SELECT * from users where username ="' . $username . '"';
@@ -86,9 +86,6 @@ if($username == $foundUName && password_verify($password, $foundpass)){
 
 	$_SESSION['username'] = $username;
 	$_SESSION['points'] = $points;
-	if($_SESSION['points'] == ""){
-		$_SESSION['points'] = 100; //
-	}
 	$loggedIn = 1;
 	header("Location: http://ec2-18-221-59-223.us-east-2.compute.amazonaws.com/project_natt_php/mobile/mainpage.php");
 

@@ -71,7 +71,7 @@ if($mysqli->connect_error){
 if(isset($_REQUEST['username']) && isset($_REQUEST['password']) && isset($_REQUEST['email']) && isset($_REQUEST['firstname']) &&
 	isset($_REQUEST['lastname'])){
 
-	$username = htmlspecialchars($_REQUEST['username']);
+	$username = strtolower(htmlspecialchars($_REQUEST['username']));
 	$password = htmlspecialchars($_REQUEST['password']);
 	$hashed_pass = password_hash($password, PASSWORD_DEFAULT);
 	$email = htmlspecialchars($_REQUEST['email']);
