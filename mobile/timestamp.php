@@ -13,6 +13,11 @@ if (screen.width >= 700) {
 document.location = "../deviceDetection.php";
 }
 
+$(document).ready(function(){
+$(window).blur(function(){
+	document.location = "mainpage.php";
+});
+});
         </script>
 
 
